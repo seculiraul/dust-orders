@@ -4,8 +4,10 @@ const orderRoutes = require('./routes/orderRoutes')
 const allowedOrigins = require('./allowedOrigins')
 const credentials = require('./middleware/credentials')
 const cookieParser = require('cookie-parser')
+const handleError = require('./middleware/handleError')
 const app = express()
 
+app.use(cookieParser())
 app.use(credentials)
 app.use(
   cors({
@@ -20,7 +22,6 @@ app.use(
   })
 )
 app.use(express.json())
-app.use(cookieParser())
 
 app.use(orderRoutes)
 
@@ -29,5 +30,7 @@ app.use('/test', (req, res) => {
     message: 'success',
   })
 })
+
+app.use(handleError)
 
 module.exports = app

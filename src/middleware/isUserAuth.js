@@ -1,22 +1,17 @@
 const jwt = require('jsonwebtoken')
+const ApiError = require('../util/ApiError')
+const catchAsync = require('../util/catchAsync')
 
-const validateUser = async (req, res, next) => {
-  try {
-    const cookies = req.cookies
-    console.log(req)
-    if (!cookies?.jwt)
-      return res.status(403).json({
-        message: 'not auth',
-      })
-    if (cookies.jwt) {
-      const payload = await jwt.verify(cookies.jwt, process.env.JWT_SECRET)
-      req.currentUser = payload
-      return next()
-    }
+const validateUser = catchAsync(async (req, res, next) => {
+  const cookies = req.cookies
+  console.log(req.cookies)
+  if (!cookies?.jwt) return next(new ApiError('User is not authenticated', 403))
+  if (cookies.jwt) {
+    const payload = await jwt.verify(cookies.jwt, process.env.JWT_SECRET)
+    req.currentUser = payload
     return next()
-  } catch (err) {
-    console.log(err)
   }
-}
+  return next()
+})
 
 module.exports = validateUser
