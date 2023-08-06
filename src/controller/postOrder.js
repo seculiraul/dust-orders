@@ -1,3 +1,5 @@
+const Producer = require('../messaging/Producer')
+const producer = new Producer()
 const Order = require('../models/order')
 const catchAsync = require('../util/catchAsync')
 
@@ -21,6 +23,8 @@ module.exports = catchAsync(async (req, res, next) => {
     payMethod,
     deliveryOption,
   })
+
+  await producer.publishMessage('Order_Created', order)
 
   res.status(201).json({
     message: 'success',
