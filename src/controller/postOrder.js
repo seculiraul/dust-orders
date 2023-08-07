@@ -1,7 +1,6 @@
-const Producer = require('../messaging/Producer')
-const producer = new Producer()
 const Order = require('../models/order')
 const catchAsync = require('../util/catchAsync')
+const producer = require('../messaging/Producer')
 
 module.exports = catchAsync(async (req, res, next) => {
   const {
@@ -24,7 +23,7 @@ module.exports = catchAsync(async (req, res, next) => {
     deliveryOption,
   })
 
-  await producer.publishMessage('Order_Created', order)
+  producer.publishMessage('Order_Created', order)
 
   res.status(201).json({
     message: 'success',

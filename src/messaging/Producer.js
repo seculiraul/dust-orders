@@ -33,4 +33,4 @@ class Producer {
   }
 }
 
-module.exports = Producer
+module.exports = new Producer()
