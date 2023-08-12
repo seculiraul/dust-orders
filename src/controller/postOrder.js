@@ -1,7 +1,6 @@
 const Order = require('../models/order')
 const catchAsync = require('../util/catchAsync')
 const producer = require('../messaging/Producer')
-const Products = require('../models/product')
 
 module.exports = catchAsync(async (req, res, next) => {
   const {
@@ -13,7 +12,7 @@ module.exports = catchAsync(async (req, res, next) => {
     deliveryOption,
   } = req.body
 
-  console.log(req.currentUser)
+  console.log(products)
   const order = await Order.create({
     total,
     transportCost,
