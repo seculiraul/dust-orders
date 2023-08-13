@@ -1,12 +1,12 @@
 const dotenv = require('dotenv').config({ path: __dirname + '/../config.env' })
 const mongoose = require('mongoose')
 const app = require('./app')
-const producer = require('./messaging/Producer')
+const rabbitMqClient = require('./messaging/RabbitMqClient')
 
 const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI)
-    producer.createChannel()
+    rabbitMqClient.connectAndStartListening()
     console.log('connected')
   } catch (err) {
     console.log(err)
