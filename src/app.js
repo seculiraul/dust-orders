@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const orderRoutes = require('./routes/orderRoutes')
+const productsRoutes = require('./routes/productRoutes')
 const allowedOrigins = require('./allowedOrigins')
 const credentials = require('./middleware/credentials')
 const cookieParser = require('cookie-parser')
@@ -24,6 +25,7 @@ app.use(
 app.use(express.json())
 
 app.use(orderRoutes)
+app.use(productsRoutes)
 
 app.use('/test', (req, res) => {
   res.json({
