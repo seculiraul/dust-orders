@@ -20,7 +20,7 @@ const orderSchema = mongoose.Schema({
   },
   datePlaced: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   total: Number,
   transportCost: Number,
