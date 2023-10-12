@@ -16,7 +16,7 @@ class RabbitMqClient {
       'direct'
     )
 
-    const q = await this.channel.assertQueue('products')
+    const q = await this.channel.assertQueue('products', { durable: true })
 
     await this.channel.bindQueue(
       q.queue,
@@ -25,9 +25,14 @@ class RabbitMqClient {
     )
     this.channel.consume(q.queue, (msg) => {
       const data = JSON.parse(msg.content)
-      productCreatedHandler(data.message)
-      console.log(data.message)
-      this.channel.ack(msg)
+      try {
+        productCreatedHandler(data.message)
+        console.log(data.message)
+        this.channel.ack(msg)
+      } catch (err) {
+        console.log(err)
+        this.channel.reject(msg, true)
+      }
     })
   }
 
