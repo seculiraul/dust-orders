@@ -2,10 +2,11 @@ const Order = require('../models/order')
 const ApiError = require('../util/ApiError')
 const catchAsync = require('../util/catchAsync')
 module.exports = catchAsync(async (req, res, next) => {
-  if (!req.currentUser) {
+  if (!req?.currentUser?.email) {
     return next(new ApiError('There is no user logged in', 403))
   }
-  const orders = await Order.find({ userId: req.currentUser.id })
+
+  const orders = await Order.find({ userId: req.currentUser.email })
     .sort({ datePlaced: -1 })
     .select('-__v')
 

@@ -12,12 +12,11 @@ module.exports = catchAsync(async (req, res, next) => {
     deliveryOption,
   } = req.body
 
-  console.log(products)
   const order = await Order.create({
     total,
     transportCost,
     products,
-    userId: req.currentUser ? req.currentUser.id : undefined,
+    userId: req.currentUser ? req.currentUser.email : undefined,
     deliveryDetails,
     payMethod,
     deliveryOption,
